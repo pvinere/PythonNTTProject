@@ -1,1 +1,3 @@
 # PythonNTTProject
+
+package -> dist
