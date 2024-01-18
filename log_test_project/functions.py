@@ -1,9 +1,5 @@
 import re, unittest
 
-log_file = 'sampleFile.txt'
-logs = 'aceeasiAplicatie.txt'
-
-
 
 def count_logs(log_file):
     counts = {'INFO': 0, 'DEBUG': 0, 'ERROR': 0}
@@ -27,8 +23,8 @@ def avg(apps):
     average = {}
     for apps, data in apps.items():
 
-        #division by 0!!
-        if(sum(data)==0 or len(data) == 0):
+        # division by 0!!
+        if (sum(data) == 0 or len(data) == 0):
             continue
         else:
             average[apps] = sum(data) / len(data)
@@ -46,7 +42,7 @@ def calculate_average_run_time(log_file):
                 line)
             if match:
                 status, app_type, action, run_time = match.groups()
-                #print(f"Match found: status={status}, app_type={app_type}, action={action}, run_time={run_time}")
+                # print(f"Match found: status={status}, app_type={app_type}, action={action}, run_time={run_time}")
                 if app_type == 'SYSTEM':
                     continue
                 if action == 'ran successfully':
@@ -61,21 +57,21 @@ def calculate_average_run_time(log_file):
 
 
 def most_failed_runs(log_file):
-    apps_counter = {'FrontendApp' : 0, 'BackendApp' : 0,'API' : 0, 'SYSTEM' : 0}
+    apps_counter = {'FrontendApp': 0, 'BackendApp': 0, 'API': 0, 'SYSTEM': 0}
 
     with open(log_file, 'r') as file:
         for line in file:
             strings = line.split('-')
             if 'ERROR' in strings[1]:
                 aux = strings[2].split()
-                apps_counter[aux[0]] +=1
+                apps_counter[aux[0]] += 1
     app = max(apps_counter, key=apps_counter.get)
     print(f'App with the most failed runs is {app} with {apps_counter[app]}')
     return app, apps_counter[app]
 
 
 def most_succesful_runs(log_file):
-    apps_counter = {'FrontendApp' : 0, 'BackendApp' : 0,'API' : 0, 'SYSTEM' : 0}
+    apps_counter = {'FrontendApp': 0, 'BackendApp': 0, 'API': 0, 'SYSTEM': 0}
     info_counter = 0
     maxi = 0
 
@@ -86,15 +82,14 @@ def most_succesful_runs(log_file):
                 info_counter += 1
                 if info_counter % 2 == 0:
                     aux = strings[2].split()
-                    apps_counter[aux[0]] +=1
+                    apps_counter[aux[0]] += 1
         app = max(apps_counter, key=apps_counter.get)
         print(f'App with the most succesful runs is {app} with {apps_counter[app]}')
         return app, apps_counter[app]
 
 
 def errors_app_daily(log_file):
-
-    apps_counter = {'FrontendApp' : 0, 'BackendApp' : 0,'API' : 0, 'SYSTEM' : 0}
+    apps_counter = {'FrontendApp': 0, 'BackendApp': 0, 'API': 0, 'SYSTEM': 0}
     current_time = [0, 0, 0]
     day = 1
 
@@ -103,7 +98,7 @@ def errors_app_daily(log_file):
             strings = line.split('-')
             if 'ERROR' in strings[1]:
                 aux = strings[2].split()
-                apps_counter[aux[0]] +=1
+                apps_counter[aux[0]] += 1
 
             time_list = strings[0].split(':')
             ceck = False
@@ -115,18 +110,17 @@ def errors_app_daily(log_file):
                 ceck = True
 
             if ceck:
-
                 print(f"Day {day} "
                       f"FrontendApp ={apps_counter['FrontendApp']} "
                       f"BackendApp ={apps_counter['BackendApp']} "
                       f"API ={apps_counter['API']} "
                       f"SYSTEM ={apps_counter['SYSTEM']}")
-                day +=1
+                day += 1
                 apps_counter['FrontendApp'] = 0
                 apps_counter['BackendApp'] = 0
                 apps_counter['API'] = 0
                 apps_counter['SYSTEM'] = 0
-            current_time = [time_list[0],time_list[1],time_list[2]]
+            current_time = [time_list[0], time_list[1], time_list[2]]
         return day
 
 
@@ -173,8 +167,8 @@ def calculate_run_times(log_file):
 
 
 def count_activities_by_hour(log_file):
-    app_activities = {'FrontendApp': [0]*24, 'BackendApp': [0]*24, 'API': [0]*24}
-    default = {'FrontendApp': [0]*24, 'BackendApp': [0]*24, 'API': [0]*24}
+    app_activities = {'FrontendApp': [0] * 24, 'BackendApp': [0] * 24, 'API': [0] * 24}
+    default = {'FrontendApp': [0] * 24, 'BackendApp': [0] * 24, 'API': [0] * 24}
     with open(log_file, 'r') as file:
         for line in file:
             time = line.split(' - ')[0]
@@ -211,34 +205,5 @@ def calculate_failure_rates(log_file):
         total_logs = failure_rate[app][1]
         if total_logs != 0:
             failure_rate_percent = (num_errors / total_logs) * 100
-            failure_rates[app] = round(failure_rate_percent,2)
+            failure_rates[app] = round(failure_rate_percent, 2)
     return failure_rates
-
-print("Ex_1:")
-print(count_logs(log_file))
-
-print("Ex_2:")
-print(calculate_average_run_time(log_file))
-average = avg(calculate_average_run_time(log_file))
-print(average)
-
-print("Ex_3:")
-errors_app_daily(log_file)
-
-print("Ex_4:")
-most_failed_runs(log_file)
-
-print("Ex_5:")
-print(f"{most_succesful_runs(log_file)}")
-
-print("Ex_6:")
-print(f'Most failed third of day: {count_errors_by_third_of_day(logs)}')
-
-print("Ex_7:")
-print(f'Longest and shortest run times: {calculate_run_times(logs)}')
-
-print("Ex_8:")
-print(f'Most active hour for each app: {count_activities_by_hour(logs)}')
-
-print("Ex_9:")
-print(f'Failure rate for each app: {calculate_failure_rates(logs)}')

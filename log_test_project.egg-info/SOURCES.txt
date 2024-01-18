@@ -1,0 +1,10 @@
+README.md
+setup.py
+log_test_project/UnitTests.py
+log_test_project/__init__.py
+log_test_project/apeluri.py
+log_test_project/functions.py
+log_test_project.egg-info/PKG-INFO
+log_test_project.egg-info/SOURCES.txt
+log_test_project.egg-info/dependency_links.txt
+log_test_project.egg-info/top_level.txt
